@@ -1,0 +1,8 @@
+[package]
+name = "gl_test"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+sdl3 = "0.15.1"
+alice_gl = { path = "./alice_gl" }
