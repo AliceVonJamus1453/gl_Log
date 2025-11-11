@@ -1,4 +1,4 @@
-use std::ffi::CString;
+use std::{ffi::CString, os::raw::c_void};
 
 use gl::types::{GLenum, GLsizei, GLuint};
 
@@ -107,5 +107,20 @@ pub fn use_program(program: u32) {
 pub fn draw_arrays(mode: GLenum, first: i32, count: i32) {
     unsafe {
         gl::DrawArrays(mode, first, count);
+    }
+}
+
+pub fn draw_elements(mode: GLenum, count: i32, type_: GLenum, offset: Option<usize>) {
+    unsafe {
+        gl::DrawElements(
+            mode,
+            count,
+            type_,
+            if let Some(offset) = offset {
+                offset as *const c_void
+            } else {
+                std::ptr::null()
+            }
+        );
     }
 }

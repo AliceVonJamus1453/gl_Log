@@ -20,11 +20,12 @@ impl BufferType {
 
 pub trait Bind {
     fn bind(&self);
-    fn unbind(&self);
+    fn unbind();
 }
 
 pub trait Buffer {
-    fn upload(&mut self, data: &[f32], usage: Usage);
+    type DataType;
+    fn upload(&mut self, data: &[Self::DataType], usage: Usage);
 }
 
 pub trait IdObject {

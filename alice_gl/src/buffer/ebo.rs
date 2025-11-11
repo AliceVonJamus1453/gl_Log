@@ -7,34 +7,34 @@ use crate::constant::Usage;
 use gl::types::GLuint;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Vbo {
-    pub (in crate::buffer)id: GLuint,
+pub struct Ebo {
+    id: GLuint,
 }
 
-impl Bind for Vbo {
+impl Bind for Ebo {
     fn bind(&self) {
-        bind_buffer(gl::ARRAY_BUFFER, self.id);
+        bind_buffer(gl::ELEMENT_ARRAY_BUFFER, self.id);
     }
     fn unbind() {
-        unbind_buffer(gl::ARRAY_BUFFER);
+        bind_buffer(gl::ELEMENT_ARRAY_BUFFER, 0);
     }
 }
 
-impl Drop for Vbo {
+impl Drop for Ebo {
     fn drop(&mut self) {
         delete_buffers(1, &[self.id]);
     }
 }
 
 
-impl Buffer for Vbo {
-    type DataType = f32;
+impl Buffer for Ebo {
+    type DataType = u32;
     fn upload(&mut self, data: &[Self::DataType], usage: Usage) {
-        buffer_data(gl::ARRAY_BUFFER, data, usage);
+        buffer_data(gl::ELEMENT_ARRAY_BUFFER, data, usage);
     }
 }
 
-impl IdObject for Vbo {
+impl IdObject for Ebo {
     fn id(&self) -> GLuint {
         self.id
     }

@@ -4,7 +4,8 @@ use alice_gl::{
         core::{Bind, Buffer, IdObject},
         generator::Generator,
         vao::Vao,
-        vbo::Vbo
+        vbo::Vbo,
+        ebo::Ebo
     },
     constant::{Boolean, Type, Usage},
     shader::{
@@ -32,9 +33,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut geneater = Generator::new();
 
     let vertex = [
-        0.5, -0.5, 0.0, 1.0, 0.0, 0.0,
-        -0.5, -0.5, 0.0, 0.0, 1.0, 0.0,
-        0.0, 0.5, 0.0, 0.0, 0.0, 1.0,
+        -0.8, -0.5, 0.0, 0.2, 0.0, 0.3,
+        0.8, -0.5, 0.0, 0.5, 0.0, 0.8,
+        -0.8, 0.5, 0.0, 0.5, 0.0, 0.8,
+        0.8, 0.5, 0.0, 0.2, 0.0, 0.3,
     ];
 
     let mut vbo = Vbo::create(&mut geneater);
@@ -56,6 +58,14 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut shader = Program::link_from(&vertex_shader, &fragment_shader);
     shader.use_program();
 
+    let mut ebo = Ebo::create(&mut geneater);
+    ebo.bind();
+    let indices = [
+        0, 1, 2,
+        1, 2, 3
+    ];
+    ebo.upload(&indices, Usage::StaticDraw);
+
     let mut event_pump = sdl3.event_pump()?;
     'Running: loop {
         clear();
@@ -69,8 +79,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
         }
 
-        shader.draw_arrays(DrawMode::Triangles, 0, 3);
-
+        shader.draw_elements(DrawMode::Triangles, 6, Type::UInt, None);
         window.gl_swap_window();
     }
 

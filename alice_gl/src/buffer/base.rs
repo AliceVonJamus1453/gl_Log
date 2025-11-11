@@ -2,7 +2,7 @@ use gl::types::{GLenum, GLint, GLsizei, GLsizeiptr, GLuint, GLboolean, GLvoid};
 
 use crate::constant::Usage;
 
-/* 这里往下是Buffer的内容 */
+/* 这里往下是VBO的内容 */
 pub fn gen_buffers(n: i32, buffers: &mut u32) {
     unsafe {
         gl::GenBuffers(n as GLsizei, buffers);
@@ -27,9 +27,9 @@ pub fn delete_buffers(n: i32, buffers: &[u32]) {
     }
 }
 
-pub fn buffer_data(target: GLenum, data: &[f32], usage: Usage) {
+pub fn buffer_data<T>(target: GLenum, data: &[T], usage: Usage) {
     unsafe {
-        let size = (data.len() * std::mem::size_of::<f32>()) as GLsizeiptr;
+        let size = (data.len() * std::mem::size_of::<T>()) as GLsizeiptr;
         gl::BufferData(
             target,
             size,

@@ -18,7 +18,7 @@ impl Bind for Vao {
     fn bind(&self) {
         bind_vertex_arrays(self.id);
     }
-    fn unbind(&self) {
+    fn unbind() {
         unbind_vertex_arrays();
     }
 }
