@@ -1,11 +1,7 @@
 use std::{error::Error, path::Path, mem::size_of};
 use alice_gl::{
     buffer::{
-        core::{Bind, Buffer, IdObject},
-        generator::Generator,
-        vao::Vao,
-        vbo::Vbo,
-        ebo::Ebo
+        core::{Bind, Buffer, IdObject}, ebo::Ebo, generator::Generator, vao::Vao, vbo::Vbo
     },
     constant::{Boolean, Type, Usage},
     shader::{
@@ -53,11 +49,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     Vao::enable(1);
     vao.upload(1, 3, Type::Float, Boolean::False, (6*size_of::<f32>()) as i32, Some(3*size_of::<f32>()));
 
-    let vertex_shader = VertexShader::compile_from("TestVertexShader", Path::new("./src/test.vert"));
-    let fragment_shader = FragmentShader::compile_from("TestFragmentShader", Path::new("./src/test.frag"));
-    let mut shader = Program::link_from(&vertex_shader, &fragment_shader);
-    shader.use_program();
-
     let mut ebo = Ebo::create(&mut geneater);
     ebo.bind();
     let indices = [
@@ -65,6 +56,11 @@ fn main() -> Result<(), Box<dyn Error>> {
         1, 2, 3
     ];
     ebo.upload(&indices, Usage::StaticDraw);
+
+    let vertex_shader = VertexShader::compile_from("TestVertexShader", Path::new("./src/test.vert"));
+    let fragment_shader = FragmentShader::compile_from("TestFragmentShader", Path::new("./src/test.frag"));
+    let shader = Program::link_from(&vertex_shader, &fragment_shader);
+    shader.use_program();
 
     let mut event_pump = sdl3.event_pump()?;
     'Running: loop {
@@ -79,7 +75,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
         }
 
-        shader.draw_elements(DrawMode::Triangles, 6, Type::UInt, None);
+        Program::draw_elements(DrawMode::Triangles, 6, Type::UInt, None);
         window.gl_swap_window();
     }
 

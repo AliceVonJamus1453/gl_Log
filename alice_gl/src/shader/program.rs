@@ -47,10 +47,10 @@ impl Program {
     pub fn use_program(&self) {
         use_program(self.id());
     }
-    pub fn draw_arrays(&mut self, mode: DrawMode, first: i32, count: i32) {
+    pub fn draw_arrays(mode: DrawMode, first: i32, count: i32) {
         draw_arrays(mode.unzip(), first, count);
     }
-    pub fn draw_elements(&mut self, mode: DrawMode, count: i32, type_: Type, offset: Option<usize>) {
+    pub fn draw_elements(mode: DrawMode, count: i32, type_: Type, offset: Option<usize>) {
         draw_elements(mode.unzip(), count, type_.unzip(), offset);
     }
 }
