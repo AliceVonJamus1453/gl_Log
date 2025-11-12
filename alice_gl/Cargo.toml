@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 gl = "0.14.0"
+alice_gl_macro = { path = "./alice_gl_macro" }

@@ -7,6 +7,7 @@ use alice_gl::{
     shader::{
         core::{DrawMode, Shader}, fragment::FragmentShader, program::Program, vertex::VertexShader
     },
+    loader::load_with,
     window::*
 };
 use sdl3::{event::Event, video::GLProfile};
@@ -22,17 +23,16 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let gl_context = window.gl_create_context()?;
     window.gl_make_current(&gl_context)?;
-    alice_gl::load_with(|s| video_system.gl_get_proc_address(s).unwrap() as *const _);
+    load_with(|s| video_system.gl_get_proc_address(s).unwrap() as *const _);
 
     viewport(0, 0, 800, 600);
     clearcolor(0.5, 0.5, 1.0, 1.0);
     let mut geneater = Generator::new();
 
     let vertex = [
-        -0.8, -0.5, 0.0, 0.2, 0.0, 0.3,
-        0.8, -0.5, 0.0, 0.5, 0.0, 0.8,
-        -0.8, 0.5, 0.0, 0.5, 0.0, 0.8,
-        0.8, 0.5, 0.0, 0.2, 0.0, 0.3,
+        -0.5, -0.5, 0.0, 1.0, 0.0, 0.0,
+        0.5, -0.5, 0.0, 0.0, 1.0, 0.0,
+        0.0, 0.5, 0.0, 0.0, 0.0, 1.0,
     ];
 
     let mut vbo = Vbo::create(&mut geneater);
@@ -53,7 +53,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     ebo.bind();
     let indices = [
         0, 1, 2,
-        1, 2, 3
     ];
     ebo.upload(&indices, Usage::StaticDraw);
 
@@ -75,7 +74,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
         }
 
-        Program::draw_elements(DrawMode::Triangles, 6, Type::UInt, None);
+        Program::draw_elements(DrawMode::Triangles, 3, Type::UInt, None);
         window.gl_swap_window();
     }
 
