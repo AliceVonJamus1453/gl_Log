@@ -8,7 +8,7 @@ use gl::types::GLuint;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Vbo {
-    pub (in crate::buffer)id: GLuint,
+    id: GLuint,
 }
 
 impl Bind for Vbo {
