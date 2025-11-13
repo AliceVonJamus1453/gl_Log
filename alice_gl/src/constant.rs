@@ -14,6 +14,7 @@ impl Usage {
 
 pub enum Type {
     Float,
+    Double,
     Int,
     UInt,
 }
@@ -22,6 +23,7 @@ impl Type {
     pub fn unzip(self) -> GLenum {
         match self {
             Type::Float => gl::FLOAT,
+            Type::Double => gl::DOUBLE,
             Type::Int => gl::INT,
             Type::UInt => gl::UNSIGNED_INT,
         }
